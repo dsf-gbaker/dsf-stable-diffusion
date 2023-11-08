@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+  api:
+    image: quay.io/go-skynet/local-ai:latest
+    tty: true
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/models:cached
+      - ./images/:/tmp/generated/images/
+    env_file:
+      - .env
+    command: ["/usr/bin/local-ai" ]
+  ui:
+    image: dsf-ui:latest
+    build:
+      no_cache: true
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - "dsf-ui:latest"
+    ports:
+      - "4200:4200"
