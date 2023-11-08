@@ -128,3 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore generated images
+images/*
+
+# Ignore models
+models/*
+
+# just in case
+.DS_Store
+.idea
