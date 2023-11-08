@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertType } from '../alert/alert.component';
-import { EImageSize, ImageProvider } from 'src/app/interfaces/imageprovider.interface';
+import { EImageMode, EImageSize, ImageProvider } from 'src/app/interfaces/imageprovider.interface';
 import { LLamaImageProviderService } from 'src/app/services/llamaimageprovider/llamaimageprovider.service';
 import { EMPTY, catchError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -51,7 +51,7 @@ export class MainComponent {
     this.working = true;
 
     // TODO: make image size dynamic
-    this.imager.createImage(prompt, EImageSize.small)
+    this.imager.createImage(prompt, EImageSize.small, 40, EImageMode.linear)
       .pipe(catchError((e: HttpErrorResponse, src) => { 
           console.log(JSON.stringify(e));
           this.working = false;

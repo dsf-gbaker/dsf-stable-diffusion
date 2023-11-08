@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IImageResponse, ImageProvider, EImageSize } from 'src/app/interfaces/imageprovider.interface';
+import { IImageResponse, ImageProvider, EImageSize, EImageMode } from 'src/app/interfaces/imageprovider.interface';
 import { Observable, EMPTY } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
 interface ILLamaRequest {
   prompt: string;
   size:   string;
+  step:   number;
+  mode:   number;
 }
 
 interface ILLamaData {
@@ -40,7 +42,7 @@ export class LLamaImageProviderService implements ImageProvider {
 
   constructor(private http: HttpClient) { }
 
-  createImage(prompt: string, size?: EImageSize): Observable<IImageResponse> {
+  createImage(prompt: string, size?: EImageSize, step: number = 30, mode: EImageMode = EImageMode.linear): Observable<IImageResponse> {
     
     this.imageSize  = size ? size : this.defaultImageSize;
     this.prompt     = prompt;
@@ -52,7 +54,9 @@ export class LLamaImageProviderService implements ImageProvider {
 
     let req: ILLamaRequest = {
       prompt: this.prompt,
-      size:   this.imageSize
+      size:   this.imageSize,
+      step:   step,
+      mode:   mode
     }
 
     return this.http.post<ILLamaResponse>(this.defaultHref, JSON.stringify(req), { headers: this.defaultHeaders })
